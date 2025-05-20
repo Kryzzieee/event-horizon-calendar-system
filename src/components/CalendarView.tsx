@@ -12,6 +12,19 @@ interface CalendarViewProps {
   onDateSelect: (date: Date) => void;
 }
 
+// Define the props type for the custom Day component
+interface DayProps {
+  date: Date;
+  displayMonth?: Date;
+  selected?: boolean;
+  disabled?: boolean;
+  outside?: boolean;
+  today?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+  [key: string]: any;
+}
+
 const CalendarView: React.FC<CalendarViewProps> = ({ events, selectedDate, onDateSelect }) => {
   // Function to find events on a specific date
   const getEventsForDate = (date: Date) => {
@@ -21,11 +34,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({ events, selectedDate, onDat
   };
 
   // Custom day renderer for the calendar
-  const renderDay = (day: Date, selectedDays: Date[], properties: Record<string, unknown>) => {
+  const renderDay = (props: DayProps) => {
+    const { date, selected } = props;
+    
     // Get events for this day
-    const dayEvents = getEventsForDate(day);
-    const isToday = isSameDay(day, new Date());
-    const isSelected = selectedDays.some(selectedDay => isSameDay(selectedDay, day));
+    const dayEvents = getEventsForDate(date);
+    const isToday = isSameDay(date, new Date());
     
     // Define colors for different event types
     const eventTypeColors: Record<string, string> = {
@@ -46,15 +60,15 @@ const CalendarView: React.FC<CalendarViewProps> = ({ events, selectedDate, onDat
 
     return (
       <div
-        {...properties}
+        {...props}
         className={cn(
           'relative p-2 h-10 w-10 flex items-center justify-center rounded-full transition-colors',
           isToday ? 'bg-primary/10 text-primary font-semibold' : '',
-          isSelected ? 'bg-primary text-primary-foreground font-semibold' : '',
-          properties.className as string
+          selected ? 'bg-primary text-primary-foreground font-semibold' : '',
+          props.className
         )}
       >
-        {format(day, 'd')}
+        {format(date, 'd')}
         
         {/* Event dots */}
         {dayEvents.length > 0 && (
@@ -86,7 +100,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ events, selectedDate, onDat
           onSelect={date => date && onDateSelect(date)}
           className={cn("p-3 pointer-events-auto rounded-md")}
           components={{
-            Day: ({ day, selectedDays, ...props }) => renderDay(day, selectedDays, props)
+            Day: (props) => renderDay(props)
           }}
         />
       </CardContent>
