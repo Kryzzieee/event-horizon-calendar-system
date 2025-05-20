@@ -108,11 +108,6 @@ const EventList: React.FC<EventListProps> = ({
                         <Badge variant="outline" className={cn("text-xs", priorityColors[event.priority])}>
                           {priorityLabels[event.priority]}
                         </Badge>
-                        {event.tags.map((tag) => (
-                          <Badge key={tag} variant="secondary" className="text-xs">
-                            {tag}
-                          </Badge>
-                        ))}
                       </div>
                     </div>
 
@@ -122,6 +117,7 @@ const EventList: React.FC<EventListProps> = ({
                         variant="ghost" 
                         onClick={() => onEditEvent(event)}
                         className="h-8 w-8"
+                        aria-label="Edit event"
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
@@ -130,6 +126,7 @@ const EventList: React.FC<EventListProps> = ({
                         variant="ghost" 
                         onClick={() => onDeleteEvent(event.id)}
                         className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                        aria-label="Delete event"
                       >
                         <Trash className="h-4 w-4" />
                       </Button>

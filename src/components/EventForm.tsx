@@ -48,7 +48,6 @@ const EventForm: React.FC<EventFormProps> = ({ onSubmit, onCancel, event, select
   const [endTimeString, setEndTimeString] = useState(
     event?.endTime ? format(new Date(event.endTime), "HH:mm") : "10:00"
   );
-  const [tagInput, setTagInput] = useState("");
 
   // Update form data when dates or times change
   useEffect(() => {
@@ -78,24 +77,6 @@ const EventForm: React.FC<EventFormProps> = ({ onSubmit, onCancel, event, select
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle tag input
-  const handleAddTag = () => {
-    if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        tags: [...prev.tags, tagInput.trim()],
-      }));
-      setTagInput("");
-    }
-  };
-
-  const handleRemoveTag = (tagToRemove: string) => {
-    setFormData(prev => ({
-      ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove),
-    }));
-  };
-
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,7 +97,7 @@ const EventForm: React.FC<EventFormProps> = ({ onSubmit, onCancel, event, select
         <CardTitle>{event ? "Edit Event" : "Create New Event"}</CardTitle>
       </CardHeader>
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 max-h-[70vh] overflow-y-auto">
           {/* Title */}
           <div className="space-y-2">
             <Label htmlFor="title">Event Title</Label>
@@ -300,65 +281,6 @@ const EventForm: React.FC<EventFormProps> = ({ onSubmit, onCancel, event, select
                 </Label>
               </div>
             </RadioGroup>
-          </div>
-
-          {/* Color Coding */}
-          <div className="space-y-2">
-            <Label htmlFor="color">Color</Label>
-            <Select
-              value={formData.color}
-              onValueChange={(value) => handleSelectChange("color", value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Choose color" />
-              </SelectTrigger>
-              <SelectContent>
-                <div className="grid grid-cols-5 gap-2 p-2">
-                  {["blue", "red", "green", "yellow", "purple", "pink", "orange", "cyan", "teal", "indigo"].map((color) => (
-                    <button
-                      key={color}
-                      type="button"
-                      className={`h-8 w-8 rounded-full bg-${color}-500 hover:ring-2 hover:ring-offset-2 ${formData.color === color ? "ring-2 ring-offset-2" : ""}`}
-                      onClick={() => handleSelectChange("color", color)}
-                    />
-                  ))}
-                </div>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Tags */}
-          <div className="space-y-2">
-            <Label htmlFor="tags">Tags</Label>
-            <div className="flex gap-2">
-              <Input
-                id="tagInput"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                placeholder="Add a tag"
-                className="flex-1"
-              />
-              <Button type="button" onClick={handleAddTag} variant="secondary">
-                Add
-              </Button>
-            </div>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {formData.tags.map((tag, index) => (
-                <div
-                  key={index}
-                  className="bg-secondary text-secondary-foreground px-2 py-1 rounded-md flex items-center gap-1 text-sm"
-                >
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTag(tag)}
-                    className="text-secondary-foreground/70 hover:text-secondary-foreground"
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Description */}

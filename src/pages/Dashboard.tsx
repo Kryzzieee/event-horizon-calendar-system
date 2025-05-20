@@ -78,6 +78,7 @@ const Dashboard = () => {
     }
     
     setIsFormOpen(false);
+    setEventToEdit(null);
   };
 
   const handleDeleteEvent = (eventId: string) => {
@@ -126,7 +127,7 @@ const Dashboard = () => {
       </header>
       
       {/* Main Content */}
-      <main className="container mx-auto py-8 px-4">
+      <main className="container mx-auto py-8 px-4 max-h-[calc(100vh-80px)] overflow-y-auto">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left Column - Calendar */}
           <div className="w-full md:w-1/3">
@@ -156,7 +157,7 @@ const Dashboard = () => {
           </div>
 
           {/* Right Column - Event List */}
-          <div className="w-full md:w-2/3">
+          <div className="w-full md:w-2/3 overflow-y-auto max-h-[70vh]">
             <EventList 
               events={events}
               onEditEvent={handleEditEvent}
