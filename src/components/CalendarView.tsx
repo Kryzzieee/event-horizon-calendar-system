@@ -22,11 +22,11 @@ const CalendarView: React.FC<CalendarViewProps> = ({ events, selectedDate, onDat
   };
 
   // Custom day renderer for the calendar
-  const renderDay = (day: DayProps, _props: React.HTMLAttributes<HTMLDivElement>) => {
-    const { date } = day;
+  const renderDay = (props: DayProps) => {
+    const { date } = props;
     
     if (!date) {
-      return <div {..._props} />;
+      return null;
     }
     
     // Get events for this day
@@ -46,9 +46,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ events, selectedDate, onDat
 
     return (
       <div
-        {..._props}
         className={cn(
-          _props.className,
           'relative p-2 h-10 w-10 flex items-center justify-center rounded-full transition-colors cursor-pointer',
           isToday ? 'bg-primary/10 text-primary font-semibold' : '',
           isSelected ? 'bg-primary text-primary-foreground font-semibold' : '',
