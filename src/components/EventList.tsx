@@ -71,7 +71,7 @@ const EventList: React.FC<EventListProps> = ({
           {sortedEvents.length} event{sortedEvents.length !== 1 ? 's' : ''}
         </Badge>
       </CardHeader>
-      <CardContent>
+      <CardContent className="max-h-[500px] overflow-y-auto">
         {sortedEvents.length > 0 ? (
           <div className="space-y-4">
             {sortedEvents.map((event) => (
