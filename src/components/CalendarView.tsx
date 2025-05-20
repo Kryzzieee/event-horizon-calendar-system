@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { format, isSameDay } from 'date-fns';
 import { EventType } from '@/types/event';
+import { DayPickerDayProps } from 'react-day-picker';
 
 interface CalendarViewProps {
   events: EventType[];
@@ -21,7 +22,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ events, selectedDate, onDat
   };
 
   // Custom day renderer for the calendar
-  const renderDay = (props: React.ComponentProps<typeof Calendar.Day> & { date?: Date }) => {
+  const renderDay = (props: DayPickerDayProps) => {
     const { date } = props;
     
     if (!date) {
